@@ -5,4 +5,4 @@ Se siete arrivati a questo punto, potete già essere contenti dei risultati ragg
 **LEGGETE LA GUIDA PRIMA DI INZIARE A PROGRAMMARE**.
 
 Un saluto,
-Vincenzo :) 
+Vincenzo  
