@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Area personale</title>
+  <link rel="stylesheet" href="/area-personale.css">
+</head>
+<body class="profile-page">
+  <main class="profile-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Profilo personale</p>
+        <h1>Area personale</h1>
+      </div>
+      <nav aria-label="Navigazione area personale">
+        <a href="/home">Home</a>
+        <a href="/logout-utente">Logout</a>
+      </nav>
+    </header>
+
+    <section class="card profile-card">
+      <h2>Gestisci i tuoi dati</h2>
+      <form action="/area-personale/modifica" method="POST" class="profile-form" id="profile-form">
+        <div class="form-grid">
+          <label>
+            Nome
+            <input type="text" name="nome" id="nome" required>
+          </label>
+
+          <label>
+            Cognome
+            <input type="text" name="cognome" id="cognome" required>
+          </label>
+
+          <label class="full-width">
+            Email
+            <input type="email" name="email" id="email" required>
+          </label>
+
+          <label>
+            Username
+            <input type="text" name="username" id="username" required>
+          </label>
+
+          <label>
+            Nuova password (opzionale)
+            <input type="password" name="password" id="password" placeholder="Lascia vuoto per non cambiare">
+          </label>
+
+          <label class="full-width">
+            Livello di esperienza
+            <select name="esperienza" id="esperienza" required>
+              <option value="principiante">Principiante</option>
+              <option value="intermedio">Intermedio</option>
+              <option value="avanzato">Avanzato</option>
+            </select>
+          </label>
+
+          <label class="full-width">
+            Competenze
+            <textarea name="competenze" id="competenze" rows="4" required></textarea>
+          </label>
+
+          <label class="full-width">
+            Presentazione
+            <textarea name="bio" id="bio" rows="5" required></textarea>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Salva modifiche</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card enrollment-card">
+      <div class="section-header">
+        <div>
+          <p class="eyebrow">Iscrizione ai corsi</p>
+          <h2>Entra in un nuovo percorso formativo</h2>
+        </div>
+      </div>
+
+      <form action="/area-personale/iscrizione-corso" method="POST" class="enrollment-form" id="course-form">
+        <label>
+          Seleziona un corso
+          <select name="courseId" id="course-select" required>
+            <option value="">Carico corsi disponibili...</option>
+          </select>
+        </label>
+
+        <div class="actions" style="margin-top: 1rem;">
+          <button type="submit">Iscrivimi al corso</button>
+        </div>
+      </form>
+
+      <div id="course-message" class="message-box" aria-live="polite"></div>
+    </section>
+
+    <section class="card enrollment-list-card">
+      <h2>Le tue iscrizioni</h2>
+      <div id="mie-iscrizioni" class="course-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    async function caricaProfilo() {
+      const response = await fetch('/api/utente');
+      if (!response.ok) {
+        window.location.href = '/login-utente.html';
+        return;
+      }
+
+      const utente = await response.json();
+      document.getElementById('nome').value = utente.nome || '';
+      document.getElementById('cognome').value = utente.cognome || '';
+      document.getElementById('email').value = utente.email || '';
+      document.getElementById('username').value = utente.username || '';
+      document.getElementById('esperienza').value = utente.esperienza || 'principiante';
+      document.getElementById('competenze').value = utente.competenze || '';
+      document.getElementById('bio').value = utente.bio || '';
+    }
+
+    async function caricaCorsiDisponibili() {
+      const select = document.getElementById('course-select');
+      const response = await fetch('/api/corsi');
+      const corsi = await response.json();
+
+      if (!Array.isArray(corsi) || corsi.length === 0) {
+        select.innerHTML = '<option value="">Nessun corso disponibile al momento</option>';
+        return;
+      }
+
+      select.innerHTML = '<option value="">Seleziona un corso</option>' + corsi.map((corso) => `
+        <option value="${corso.id}">${corso.titolo} (${corso.level || 'Livello variabile'})</option>
+      `).join('');
+    }
+
+    async function caricaMieIscrizioni() {
+      const container = document.getElementById('mie-iscrizioni');
+      const response = await fetch('/api/mie-iscrizioni');
+
+      if (!response.ok) {
+        container.innerHTML = '<p class="empty-state">Non è stato possibile recuperare le tue iscrizioni.</p>';
+        return;
+      }
+
+      const iscrizioni = await response.json();
+
+      if (!Array.isArray(iscrizioni) || iscrizioni.length === 0) {
+        container.innerHTML = '<p class="empty-state">Non hai ancora iscritto nessun corso.</p>';
+        return;
+      }
+
+      container.innerHTML = iscrizioni.map((iscrizione) => `
+        <article class="mini-card">
+          <h3>${iscrizione.corso}</h3>
+          <p><strong>Data:</strong> ${new Date(iscrizione.dataIscrizione).toLocaleDateString('it-IT')}</p>
+          <p><strong>Livello:</strong> ${iscrizione.livello || 'non specificato'}</p>
+        </article>
+      `).join('');
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === '1') {
+      const message = document.getElementById('course-message');
+      message.textContent = 'Iscrizione completata con successo.';
+      message.classList.add('success-message');
+    }
+
+    caricaProfilo();
+    caricaCorsiDisponibili();
+    caricaMieIscrizioni();
+  </script>
+</body>
+</html>

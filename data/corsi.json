@@ -1,0 +1,38 @@
+[
+  {
+    "id": "frontend-base",
+    "titolo": "Frontend Base",
+    "descrizione": "Impara i fondamenti di HTML, CSS e JavaScript per costruire pagine web moderne e usabili.",
+    "level": "Principiante",
+    "durata": "6 settimane",
+    "modalita": "Online live",
+    "prezzo": "€349"
+  },
+  {
+    "id": "ux-design",
+    "titolo": "UX Design Essentials",
+    "descrizione": "Scopri come creare esperienze utente efficaci, dalla ricerca all'interfaccia finale.",
+    "level": "Intermedio",
+    "durata": "8 settimane",
+    "modalita": "Online + workshop",
+    "prezzo": "€499"
+  },
+  {
+    "id": "node-express",
+    "titolo": "Node.js & Express",
+    "descrizione": "Costruisci API e applicazioni backend affidabili con JavaScript e Express.",
+    "level": "Intermedio",
+    "durata": "7 settimane",
+    "modalita": "Online live",
+    "prezzo": "€549"
+  },
+  {
+    "id": "fullstack-dev",
+    "titolo": "Full Stack Developer",
+    "descrizione": "Un percorso completo per diventare sviluppatore full stack, dal frontend al backend.",
+    "level": "Avanzato",
+    "durata": "12 settimane",
+    "modalita": "Blended",
+    "prezzo": "€799"
+  }
+]

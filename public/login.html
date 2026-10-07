@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login admin</title>
+  <link rel="stylesheet" href="/login.css">
+</head>
+<body class="login-page">
+  <main class="login-card">
+    <p class="eyebrow">Accesso riservato</p>
+    <h1>Login amministratore</h1>
+
+    <form action="/login" method="POST" class="login-form">
+      <label>
+        Username
+        <input type="text" name="username" placeholder="admin" required>
+      </label>
+
+      <label>
+        Password
+        <input type="password" name="password" placeholder="Inserisci la password" required>
+      </label>
+
+      <button type="submit">Accedi</button>
+    </form>
+
+    <p class="login-link">
+      <a href="/">Torna alla home</a>
+    </p>
+
+    <div id="error-message" class="error-message" aria-live="polite"></div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('error') === '1') {
+      const errorEl = document.getElementById('error-message');
+      errorEl.textContent = 'Credenziali non valide. Riprova.';
+    }
+  </script>
+</body>
+</html>

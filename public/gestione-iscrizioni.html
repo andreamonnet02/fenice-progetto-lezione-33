@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestione iscrizioni</title>
+  <link rel="stylesheet" href="/gestione-iscrizioni.css">
+</head>
+<body class="admin-page">
+  <main class="admin-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Area amministrazione</p>
+        <h1>Gestione iscrizioni</h1>
+      </div>
+      <nav aria-label="Navigazione admin">
+        <a href="/">Torna al portfolio</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    </header>
+
+    <section class="card admin-card">
+      <h2>Elenco persone iscritte</h2>
+      <div id="iscrizioni-list" class="iscrizioni-list" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    const list = document.getElementById('iscrizioni-list');
+
+    const escapeHtml = (value = '') => String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+
+    async function caricaIscrizioni() {
+      const response = await fetch('/api/iscrizioni');
+      const iscrizioni = await response.json();
+
+      if (!Array.isArray(iscrizioni) || iscrizioni.length === 0) {
+        list.innerHTML = '<p class="empty-state">Nessuna iscrizione presente al momento.</p>';
+        return;
+      }
+
+      list.innerHTML = iscrizioni.map((iscrizione) => {
+        const esperienza = iscrizione.esperienza || 'principiante';
+        const options = `
+          <option value="principiante" ${esperienza === 'principiante' ? 'selected' : ''}>Principiante</option>
+          <option value="intermedio" ${esperienza === 'intermedio' ? 'selected' : ''}>Intermedio</option>
+          <option value="avanzato" ${esperienza === 'avanzato' ? 'selected' : ''}>Avanzato</option>
+        `;
+
+        return `
+          <article class="iscrizione-card">
+            <div class="iscrizione-header">
+              <div>
+                <p class="label">Iscrizione</p>
+                <h3>${escapeHtml(iscrizione.nome)}</h3>
+              </div>
+              <form action="/gestione-iscrizioni/elimina/${escapeHtml(iscrizione.id)}" method="POST">
+                <button type="submit" class="danger-button">Elimina</button>
+              </form>
+            </div>
+
+            <form action="/gestione-iscrizioni/modifica/${escapeHtml(iscrizione.id)}" method="POST" class="admin-form">
+              <div class="field-group">
+                <label>
+                  Nome
+                  <input type="text" name="nome" value="${escapeHtml(iscrizione.nome)}" required>
+                </label>
+              </div>
+
+              <div class="field-group">
+                <label>
+                  Email
+                  <input type="email" name="email" value="${escapeHtml(iscrizione.email)}" required>
+                </label>
+              </div>
+
+              <div class="field-group">
+                <label>
+                  Livello di esperienza
+                  <select name="esperienza" required>
+                    ${options}
+                  </select>
+                </label>
+              </div>
+
+              <div class="field-group">
+                <label>
+                  Messaggio
+                  <textarea name="messaggio" rows="4">${escapeHtml(iscrizione.messaggio || '')}</textarea>
+                </label>
+              </div>
+
+              <button type="submit" class="primary-button">Salva modifiche</button>
+            </form>
+          </article>
+        `;
+      }).join('');
+    }
+
+    caricaIscrizioni();
+  </script>
+</body>
+</html>

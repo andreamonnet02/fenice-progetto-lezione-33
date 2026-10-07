@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corsi disponibili - Fenice Academy</title>
+  <link rel="stylesheet" href="/corsi.css">
+</head>
+<body>
+  <header class="page-header">
+    <div class="brand-wrap">
+      <span class="brand-mark">F</span>
+      <div>
+        <p class="eyebrow">Fenice Academy</p>
+        <h1>Corsi disponibili</h1>
+      </div>
+    </div>
+
+    <nav class="top-nav" aria-label="Navigazione corsi">
+      <a href="/">Home</a>
+      <a href="/iscrizione">Registrazione</a>
+      <a href="/login-utente.html">Login utente</a>
+      <a href="/area-personale">Area personale</a>
+    </nav>
+  </header>
+
+  <main class="courses-shell">
+    <section class="intro-card">
+      <p class="eyebrow">Catalogo formativo</p>
+      <h2>Scegli il percorso più adatto a te</h2>
+      <p>Ogni corso è pensato per aiutarti a sviluppare competenze pratiche, sicure e spendibili nel mondo professionale.</p>
+    </section>
+
+    <section id="corsi-list" class="courses-grid" aria-live="polite"></section>
+  </main>
+
+  <script>
+    async function caricaCorsi() {
+      const container = document.getElementById('corsi-list');
+      const response = await fetch('/api/corsi');
+      const corsi = await response.json();
+
+      if (!Array.isArray(corsi) || corsi.length === 0) {
+        container.innerHTML = '<p class="empty-state">Nessun corso disponibile al momento.</p>';
+        return;
+      }
+
+      container.innerHTML = corsi.map((corso) => `
+        <article class="course-card">
+          <p class="course-badge">${corso.level || 'Livello variabile'}</p>
+          <h3>${corso.titolo}</h3>
+          <p>${corso.descrizione}</p>
+          <ul>
+            ${corso.durata ? `<li><strong>Durata:</strong> ${corso.durata}</li>` : ''}
+            ${corso.modalita ? `<li><strong>Modalità:</strong> ${corso.modalita}</li>` : ''}
+            ${corso.prezzo ? `<li><strong>Prezzo:</strong> ${corso.prezzo}</li>` : ''}
+          </ul>
+          <a href="/iscrizione" class="course-link">Iscriviti</a>
+        </article>
+      `).join('');
+    }
+
+    caricaCorsi();
+  </script>
+</body>
+</html>

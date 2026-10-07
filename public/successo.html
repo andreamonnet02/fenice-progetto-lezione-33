@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iscrizione ricevuta</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="success-page">
+  <main class="success-card">
+    <p class="success-badge">✅ Iscrizione confermata</p>
+    <h1>Grazie per averci contattato!</h1>
+    <p>Abbiamo ricevuto i tuoi dati correttamente. Di seguito trovi un riepilogo della tua iscrizione.</p>
+
+    <div class="success-details">
+      <div class="detail-row">
+        <span>Nome</span>
+        <strong id="nome">-</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>Email</span>
+        <strong id="email">-</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>Livello di esperienza</span>
+        <strong id="esperienza">-</strong>
+      </div>
+
+      <div class="detail-row">
+        <span>Messaggio</span>
+        <strong id="messaggio">-</strong>
+      </div>
+    </div>
+
+    <div class="success-actions">
+      <a href="/">Torna al portfolio</a>
+      <a href="/login.html">Area admin</a>
+    </div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+
+    const getParamValue = (key, fallback = '-') => {
+      const value = params.get(key);
+      return value ? decodeURIComponent(value) : fallback;
+    };
+
+    document.getElementById('nome').textContent = getParamValue('nome');
+    document.getElementById('email').textContent = getParamValue('email');
+
+    const esperienzaMap = {
+      principiante: 'Principiante',
+      intermedio: 'Intermedio',
+      avanzato: 'Avanzato',
+    };
+
+    const esperienza = getParamValue('esperienza');
+    document.getElementById('esperienza').textContent = esperienzaMap[esperienza] || esperienza || '-';
+
+    const messaggio = getParamValue('messaggio');
+    document.getElementById('messaggio').textContent = messaggio === '-' ? 'Nessun messaggio inserito' : messaggio;
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iscrizione al corso</title>
+  <link rel="stylesheet" href="/iscrizione-corso.css">
+</head>
+<body class="course-page">
+  <main class="course-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Percorso corso</p>
+        <h1>Iscrizione al corso</h1>
+      </div>
+      <nav aria-label="Navigazione corso">
+        <a href="/home">Home</a>
+        <a href="/iscrizione">Crea account</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <form action="/iscrizioni" method="POST" class="course-form">
+        <label>
+          Nome
+          <input type="text" name="nome" required>
+        </label>
+
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+
+        <label>
+          Livello di esperienza
+          <select name="esperienza" required>
+            <option value="">Seleziona</option>
+            <option value="principiante">Principiante</option>
+            <option value="intermedio">Intermedio</option>
+            <option value="avanzato">Avanzato</option>
+          </select>
+        </label>
+
+        <label>
+          Messaggio (opzionale)
+          <textarea name="messaggio" rows="5" placeholder="Scrivi qualcosa su di te o su cosa ti aspetti dal corso..."></textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit">Iscrivimi</button>
+          <button type="reset" class="secondary">Annulla</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

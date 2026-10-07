@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iscrizione</title>
+  <link rel="stylesheet" href="/iscrizione.css">
+</head>
+<body class="register-page">
+  <main class="register-shell">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Crea il tuo profilo</p>
+        <h1>Iscrizione</h1>
+      </div>
+      <nav aria-label="Navigazione iscrizione">
+        <a href="/home">Home</a>
+        <a href="/login-utente.html">Login utente</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <form action="/registrazione" method="POST" class="register-form">
+        <div class="form-grid">
+          <label>
+            Nome
+            <input type="text" name="nome" required>
+          </label>
+
+          <label>
+            Cognome
+            <input type="text" name="cognome" required>
+          </label>
+
+          <label class="full-width">
+            Email
+            <input type="email" name="email" required>
+          </label>
+
+          <label>
+            Username
+            <input type="text" name="username" required>
+          </label>
+
+          <label>
+            Password
+            <input type="password" name="password" required>
+          </label>
+
+          <label class="full-width">
+            Livello di esperienza
+            <select name="esperienza" required>
+              <option value="">Seleziona</option>
+              <option value="principiante">Principiante</option>
+              <option value="intermedio">Intermedio</option>
+              <option value="avanzato">Avanzato</option>
+            </select>
+          </label>
+
+          <label class="full-width">
+            Competenze
+            <textarea name="competenze" rows="4" placeholder="Es. HTML, CSS, JavaScript, SQL, React..." required></textarea>
+          </label>
+
+          <label class="full-width">
+            Presentazione
+            <textarea name="bio" rows="5" placeholder="Parlami di te, dei tuoi interessi e del tuo percorso..." required></textarea>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Registrati</button>
+          <button type="reset" class="secondary">Annulla</button>
+        </div>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
